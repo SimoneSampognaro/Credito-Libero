@@ -4,7 +4,6 @@ import pandas as pd
 import os
 import xarray as xr
 
-
 # inserisco il nome del file contenente i dati
 namedatafile = 'provacorso.nc'
 
