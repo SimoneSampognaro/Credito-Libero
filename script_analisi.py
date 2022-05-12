@@ -5,10 +5,10 @@ import os
 import xarray as xr
 
 # inserisco il nome del file contenente i dati
-namedatafile = 'provacorso.nc'
+namedatafile = 'dati1.nc'
 
 # leggo il file netcdf
-data = nec.Dataset(r'provacorso.nc')
+data = nec.Dataset(r'dati1.nc')
 
 # print dei nomi delle variabili presenti nel file
 print(data.variables.keys()) 
@@ -39,4 +39,4 @@ df_data_table["mean_wave_direction"] = df_data["mwd"]
 #### TO DO: aggiungere la parte di codice per all'assegnazione della risultante della velocitÃ  del vento ad una colonna della tabella
 
 df_data_table.index.names=['index']
-df_data_table.to_csv("waves_and_wind_parameters.csv")
+df_data_table.to_csv("waves_and_wind_parameters_dati1.csv")
