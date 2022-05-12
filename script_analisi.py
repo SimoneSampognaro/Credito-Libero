@@ -8,7 +8,7 @@ import xarray as xr
 namedatafile = 'dati1.nc'
 
 # leggo il file netcdf
-data = nec.Dataset(r'provacorso.nc')
+data = nec.Dataset(r'dati1.nc')
 
 # print dei nomi delle variabili presenti nel file
 print(data.variables.keys()) 
