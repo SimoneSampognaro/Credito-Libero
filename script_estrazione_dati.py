@@ -1,6 +1,6 @@
 import csv
 import os
-with open('./waves_and_wind_parameters_dati1.csv', 'r') as file:
+with open('./waves_and_wind_parameters_dati.csv', 'r') as file:
  reader = csv.reader(file)
  dati = [(linea[3],linea[4],linea[5]) for linea in reader]    # 3, 4 e 6 per mare, 7 e 8 per vento
 
@@ -14,7 +14,7 @@ dati.pop(0)
 
 with open('estrazioneSea.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
-     writer.writerow(["significant_wave_height,energy_wave_period,mean_wave_direction,potenza(kW/m"])
+     writer.writerow(["significant_wave_height,energy_wave_period,mean_wave_direction,potenza(kW/m)"])
      for dato in dati:
       # print(dato)
       # CF = 0.49*(int)dato[1]*(int)pow(dato[2],2)
