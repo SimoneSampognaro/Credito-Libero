@@ -35,8 +35,9 @@ df_data_table["time"] = df_data["time"]
 df_data_table["significant_wave_height"] = df_data["swh"]
 df_data_table["energy_wave_period"] = df_data["mwp"]
 df_data_table["mean_wave_direction"] = df_data["mwd"]
-
+df_data_table["100m_ucomponent_wind"] = df_data["u100"]
+df_data_table["100m_vcomponent_wind"] = df_data["v100"]
 #### TO DO: aggiungere la parte di codice per all'assegnazione della risultante della velocitÃ  del vento ad una colonna della tabella
 
 df_data_table.index.names=['index']
-df_data_table.to_csv("waves_and_wind_parameters_dati1.csv")
+df_data_table.to_csv("waves_and_wind_parameters_dati2.csv")
