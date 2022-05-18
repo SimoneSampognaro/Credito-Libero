@@ -19,6 +19,8 @@ def ricerca_in_matrice(altezza,periodo,power_matrix):
                 y = j-1
                 break
     #print(x,y,power_matrix[y][x])
+    if(x==0 or y==0):
+            return 0
     return power_matrix[y][x]
 
 
