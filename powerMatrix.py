@@ -6,7 +6,7 @@ import math
 def ricerca_in_matrice(altezza,periodo,power_matrix):
     x =  y = 0
     altezza = round(altezza,1)
-    periodo = round(altezza,1)
+    periodo = round(periodo,1)
     #for riga in power_matrix:
     for i in range(0,33):           
             if(float(power_matrix[0][i])>periodo):
@@ -48,6 +48,7 @@ for dato in dati:
     daAggiungere.append(dato[0])
     daAggiungere.append(dato[1])
     daAggiungere.append(dato[2])
+    daAggiungere.append(casella_power_matrix)
     risultato.append(daAggiungere)
 
 for linea in risultato:
