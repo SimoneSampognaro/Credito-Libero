@@ -1,23 +1,44 @@
+from cmath import inf
 import csv
 import os
 import numpy as nmp
 import math
 
+
 def ricerca_in_matrice(altezza,periodo,power_matrix):
     x =  y = 0
-    altezza = round(altezza,1)
-    periodo = round(periodo,1)
+    min = +inf
+   # print("nuovi dati")
+    #print(altezza)
+    #altezza = round(altezza,1)
+    #print(altezza)
+    #periodo = round(periodo,1)
     #for riga in power_matrix:
-    for i in range(0,33):           
-            if(float(power_matrix[0][i])>periodo):
+
+   # for i in range(0,33):           
+           # if(float(power_matrix[0][i])>periodo):
                 #print(power_matrix[0][i],periodo)
-                x = i-1
-                break
-    for j in range(0,27):           
-            if(float(power_matrix[j][0])>altezza):
+                #x = i-1
+               # break
+
+    for i in range(0,33):
+        diff=abs(float(power_matrix[0][i])-periodo)
+        #print(diff)
+        if(diff<min):
+              min = diff 
+              x = i
+
+    min = +inf       
+    #for j in range(0,27):           
+            #if(float(power_matrix[j][0])>altezza):
                 #print(power_matrix[j][0],altezza)
-                y = j-1
-                break
+               # y = j-1
+               # break
+    for j in range(0,27):
+        diff=abs(float(power_matrix[j][0])-altezza)
+        if(diff<min):
+              min = diff 
+              y = j
     #print(x,y,power_matrix[y][x])
     if(x==0 or y==0):         
             return 0
@@ -42,10 +63,6 @@ risultato=[]
 
 for dato in dati:
     casella_power_matrix = ricerca_in_matrice(dato[1],dato[2],power_matrix)
-    #dato.append(casella_power_matrix)
-    #daAggiungere=[]
-  #  daAggiungere.append(dato)
-   # daAggiungere.append(casella_power_matrix)
     daAggiungere=[]
     daAggiungere.append(dato[0])
     daAggiungere.append(dato[1])
