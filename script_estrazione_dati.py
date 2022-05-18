@@ -1,10 +1,10 @@
 import csv
 import os
-with open('./waves_and_wind_parameters_dati.csv', 'r') as file:
+with open('./(sopra) N42,21 E15,49 S42,11 W15,39.csv', 'r') as file:
  reader = csv.reader(file)
  dati = [(linea[3],linea[4],linea[5]) for linea in reader]    # 3, 4 e 6 per mare, 7 e 8 per vento
 
-file_path = './estrazioneSea.csv'
+file_path = './DatiSopra.csv'
 try:
     os.remove(file_path)
 except OSError as e:
@@ -12,7 +12,7 @@ except OSError as e:
 
 dati.pop(0)
 
-with open('estrazioneSea.csv', 'w', newline='') as fileOUT:
+with open('DatiSopra.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      writer.writerow(["significant_wave_height,energy_wave_period,mean_wave_direction,potenza(kW/m)"])
      for dato in dati:
