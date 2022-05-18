@@ -39,7 +39,7 @@ def ricerca_in_matrice(altezza,periodo,power_matrix):
         if(diff<min):
               min = diff 
               y = j
-    #print(x,y,power_matrix[y][x])
+    
     if(x==0 or y==0):         
             return 0
     return float(power_matrix[y][x])
