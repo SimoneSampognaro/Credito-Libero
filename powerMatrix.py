@@ -4,6 +4,13 @@ import os
 import numpy as nmp
 import math
 
+def ricerca_massimo(power_matrix):
+    max = 0
+    for riga in power_matrix:
+        for casella in riga:
+            if(float(casella)>max):
+                max = float(casella)
+    return max
 
 def ricerca_in_matrice(altezza,periodo,power_matrix):
     x =  y = 0
@@ -51,7 +58,7 @@ with open('./wec_matrix.csv', 'r') as file:
  for linea in reader:
    power_matrix.append(linea)
 
-
+#print(power_matrix[0][1])
 
 with open('./input.csv', 'r') as file2:
     reader = csv.reader(file2,delimiter=',')
@@ -70,9 +77,18 @@ for dato in dati:
     daAggiungere.append(casella_power_matrix)
     risultato.append(daAggiungere)
 
-for linea in risultato:
-   print(linea)
+
 #print(nmp.ceil(12.3))
 #x=3.85 
 #y=round(x,1)
 #print(y)
+
+pMax = ricerca_massimo(power_matrix)
+
+#print(pMax)
+for dato in risultato:
+    CF = dato[3] / pMax
+    dato.append(CF)
+
+for linea in risultato:
+   print(linea) 
