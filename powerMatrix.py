@@ -16,14 +16,14 @@ def ricerca_in_matrice(altezza,periodo,power_matrix):
     x =  y = 0
 
     min = +inf
-    for i in range(0,33):
+    for i in range(0,34):
         diff=abs(float(power_matrix[0][i])-periodo)
         if(diff<min):
               min = diff 
               x = i
 
     min = +inf       
-    for j in range(0,27):
+    for j in range(0,28):
         diff=abs(float(power_matrix[j][0])-altezza)
         if(diff<min):
               min = diff 
