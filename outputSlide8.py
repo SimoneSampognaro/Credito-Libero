@@ -55,8 +55,21 @@ with open('./onshore sotto.csv', 'r') as file5:
  for linea in reader:
     datiCFoonshoresotto = [(linea[7]) for linea in reader]
 
+datiCFsolareNORD=[]
+with open('./solare 1MW nord.csv', 'r') as file6:
+ reader = csv.reader(file6,delimiter=';')
+ for linea in reader:
+    datiCFsolareNORD = [(linea[7]) for linea in reader]
+
+datiCFsolareSUD=[]
+with open('./solare 1MW sud.csv', 'r') as file7:
+ reader = csv.reader(file7,delimiter=';')
+ for linea in reader:
+    datiCFsolareSUD = [(linea[7]) for linea in reader]
+
+
 risultato=[]
-risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra, CF OFS sotto, CF ONS sopra, CF ONS sotto"])
+risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra, CF OFS sotto, CF ONS sopra, CF ONS sotto, CF sun sopra, CF sun sotto"])
 
 for i in range(0,8760):
     daAppendere=[]
@@ -66,7 +79,8 @@ for i in range(0,8760):
     daAppendere.append(datiCFoffshoresopra[i])
     daAppendere.append(datiCFoffshoresotto[i])
     daAppendere.append(datiCFonshoresopra[i])
-    daAppendere.append(datiCFoonshoresotto[i])
+    daAppendere.append(datiCFsolareNORD[i])
+    daAppendere.append(datiCFsolareSUD[i])
     risultato.append(daAppendere)
 
 
