@@ -10,8 +10,6 @@ with open('./CF_sopra.csv', 'r') as fileTEMP:
     tempo = [(linea[0]) for linea in reader]
 
 
-
-
 datiCFsopra=[]
 with open('./CF_sopra.csv', 'r') as file:
  reader = csv.reader(file,delimiter=',')
