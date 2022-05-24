@@ -67,21 +67,32 @@ with open('./carico elettrico.csv', 'r') as file8:
  for linea in reader:
     consumo = [(linea[2].replace(",",".")) for linea in reader]
 
-
+pMax = 76891.2000390625/1000
 risultato=[]
-risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra, CF OFS sotto, CF ONS sopra, CF ONS sotto, CF sun sopra, CF sun sotto,consumo"])
-
+#risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra,  CF OFS sotto, CF ONS sopra, CF ONS sotto, CF sun sopra, Y FV installato sopra, CF sun sotto, Y FV installato sotto, consumo"])
+risultato.append(["Tempo, CF wec, produzione WEC, CF eolico, produzione EOLICO, CF FV, produzione FV, consumo elettrico, produzione diesel"])
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
     daAppendere.append(float(datiCFsopra[i]))
-    daAppendere.append(float(datiCFsotto[i]))
+    daAppendere.append(float(datiCFsopra[i])*pMax)
+   # daAppendere.append(float(datiCFsotto[i]))
+   # daAppendere.append(float(datiCFsotto[i])*pMax)
     daAppendere.append(float(datiCFoffshoresopra[i]))
-    daAppendere.append(float(datiCFoffshoresotto[i]))
-    daAppendere.append(float(datiCFonshoresopra[i]))
+    daAppendere.append(float(datiCFoffshoresopra[i])*15)
+  #  daAppendere.append(float(datiCFoffshoresotto[i]))
+   # daAppendere.append(float(datiCFoffshoresotto[i])*15)
+    #daAppendere.append(float(datiCFonshoresopra[i]))
+    #daAppendere.append(float(datiCFonshoresopra[i])*15)
+    #daAppendere.append(float(datiCFoonshoresotto[i]))
+    #daAppendere.append(float(datiCFoonshoresotto[i])*15)
     daAppendere.append(float(datiCFsolareNORD[i]))
-    daAppendere.append(float(datiCFsolareSUD[i]))
+    daAppendere.append(float(datiCFsolareNORD[i])*4)
+    #daAppendere.append(float(datiCFsolareSUD[i]))
+    #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
+    #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
+    daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-((float(datiCFsopra[i])*pMax)))
     risultato.append(daAppendere)
 
 
@@ -95,3 +106,13 @@ with open('tabellaCF.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      for linea in risultato:
          writer.writerow(linea)
+
+
+for linea in risultato:
+      count = 0
+      for dato in linea:
+          if(count==8):
+                print(dato)
+          count = count + 1
+      #print(count)
+   
