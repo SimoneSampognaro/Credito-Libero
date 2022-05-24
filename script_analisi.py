@@ -5,10 +5,10 @@ import os
 import xarray as xr
 
 # inserisco il nome del file contenente i dati
-namedatafile = 'kawai1.nc'
+namedatafile = 'onderapa.nc'
 
 # leggo il file netcdf
-data = nec.Dataset(r'kawai1.nc')
+data = nec.Dataset(r'onderapa.nc')
 
 # print dei nomi delle variabili presenti nel file
 print(data.variables.keys()) 
@@ -35,9 +35,9 @@ df_data_table["time"] = df_data["time"]
 df_data_table["significant_wave_height"] = df_data["swh"]
 df_data_table["energy_wave_period"] = df_data["mwp"]
 df_data_table["mean_wave_direction"] = df_data["mwd"]
-df_data_table["100m_ucomponent_wind"] = df_data["u100"]
-df_data_table["100m_vcomponent_wind"] = df_data["v100"]
+#df_data_table["100m_ucomponent_wind"] = df_data["u100"]
+#df_data_table["100m_vcomponent_wind"] = df_data["v100"]
 #### TO DO: aggiungere la parte di codice per all'assegnazione della risultante della velocitÃ  del vento ad una colonna della tabella
 
 df_data_table.index.names=['index']
-df_data_table.to_csv("kawai1OUT.csv")
+df_data_table.to_csv("onderapaOUT.csv")
