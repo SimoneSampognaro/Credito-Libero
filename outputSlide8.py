@@ -67,7 +67,7 @@ with open('./carico elettrico.csv', 'r') as file8:
  for linea in reader:
     consumo = [(linea[2].replace(",",".")) for linea in reader]
 
-pMax = 76891.2000390625/1000
+pMax = 76891.2000390625/1000000
 risultato=[]
 #risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra,  CF OFS sotto, CF ONS sopra, CF ONS sotto, CF sun sopra, Y FV installato sopra, CF sun sotto, Y FV installato sotto, consumo"])
 risultato.append(["Tempo, CF wec, produzione WEC, CF eolico, produzione EOLICO, CF FV, produzione FV, consumo elettrico, produzione diesel"])
@@ -92,7 +92,7 @@ for i in range(0,8760):
     #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
     #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
-    daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-((float(datiCFsopra[i])*pMax)))
+    daAppendere.append(float(consumo[i])-(float(datiCFsopra[i])*pMax))
     risultato.append(daAppendere)
 
 
