@@ -40,7 +40,7 @@ with open('./wec_matrix.csv', 'r') as file:
  for linea in reader:
    power_matrix.append(linea)
 
-with open('./onderapaOUT.csv', 'r') as file2:
+with open('./kawaiOUT.csv', 'r') as file2:
     reader = csv.reader(file2,delimiter=',')
     dati = [(linea[3], float(linea[4]), float(linea[5])) for linea in reader]  # 3 tempo 4 altezza 5 periodo
 
@@ -61,13 +61,13 @@ for dato in risultato:
     CF = dato[3] / pMax
     dato.append(CF)
 
-file_path = './CF_rapa.csv'
+file_path = './CF_kawai_wec.csv'
 try:
     os.remove(file_path)
 except OSError as e:
     print("Error: %s : %s" % (file_path, e.strerror))
 
-with open('CF_rapa.csv', 'w', newline='') as fileOUT:
+with open('CF_kawai_wec.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      writer.writerow(["time,significant_wave_height,energy_wave_period,mean_wave_direction,produzione(kW/m),CF"])
      for linea in risultato:
