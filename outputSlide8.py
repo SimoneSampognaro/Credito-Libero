@@ -92,7 +92,7 @@ for i in range(0,8760):
     #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
     #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
-    daAppendere.append(float(consumo[i])-(float(datiCFsopra[i])*pMax))
+    daAppendere.append(float(consumo[i])-(float(datiCFsopra[i])*pMax)-(float(datiCFsolareNORD[i])*4))
     risultato.append(daAppendere)
 
 
