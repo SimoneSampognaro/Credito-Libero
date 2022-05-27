@@ -92,7 +92,7 @@ for i in range(0,8760):
     #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
     #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
-    daAppendere.append(float(consumo[i])-(float(datiCFoffshoresopra[i])*1.5))
+    daAppendere.append(float(consumo[i])-(float(datiCFsopra[i])*pMax))
     risultato.append(daAppendere)
 
 
@@ -108,11 +108,24 @@ with open('tabellaCF.csv', 'w', newline='') as fileOUT:
          writer.writerow(linea)
 
 
+countM = 0
+somma = 0
+sommaVarianzaSotto = 0
 for linea in risultato:
       count = 0
       for dato in linea:
           if(count==8):
                 print(dato)
-          count = count + 1
+                somma = somma + float(dato)
+                sommaVarianzaSotto = sommaVarianzaSotto + pow(float(dato),2)
+                countM = countM + 1
+          count = count +1     
       #print(count)
-   
+
+
+media = somma/countM
+mediaQuadrato =  sommaVarianzaSotto/countM
+
+varianzaSopra = mediaQuadrato - pow(media,2)
+
+print("Ecco la media: ",media," varianza: ",varianzaSopra)   
