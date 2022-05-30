@@ -2,6 +2,20 @@ import csv
 import os
 import numpy as np
 
+def possoAccumulare(soc,effCar,dato,accumulatore):
+       return ((100-soc)*accumulatore<(dato*effCar))
+
+def hoEnergiaInPiù(dato):
+    return dato<0
+
+def socNonCento(soc):
+    return soc<100
+
+def socNonZero(soc):
+    return soc>0
+
+def possoPrelevare(soc,effScar,accumulatore,dato):
+    return ((soc*accumulatore)>(dato/effScar))
 
 tempo=[]
 with open('./CF_sopra.csv', 'r') as fileTEMP:
@@ -92,40 +106,54 @@ for i in range(0,8760):
     #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
     #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
-    daAppendere.append(float(consumo[i])-(float(datiCFsopra[i])*pMax)-(float(datiCFsolareNORD[i])*4))
+    daAppendere.append(float(consumo[i])-(float(datiCFsopra[i])*pMax))
     risultato.append(daAppendere)
 
 
-file_path = './tabellaCF.csv'
+
+energia=[]
+diesel=[]
+
+for linea in risultato:
+      count = 0
+      for dato in linea:
+          if(count==8):
+                energia.append(dato)
+          count = count + 1
+
+soc = 0
+effCar = 0.8
+effScar = 0.8
+accumulatore = 800 # suppongo 800 MWh
+
+for dato in energia:
+    prod_diesel = 0
+    if(hoEnergiaInPiù(dato)): 
+      if(socNonCento(soc)):
+         if(possoAccumulare(soc,effCar,dato,accumulatore)):
+             soc = soc + ((dato*effCar*100)/accumulatore)
+         else:
+             soc = 100
+    else:
+       if(socNonZero(soc)):
+           if(possoPrelevare(soc,effScar,accumulatore,dato)):
+               soc = soc - ((dato*100)/accumulatore*effScar)
+           else:
+                soc = 0
+                prod_diesel = dato - (soc*accumulatore*effScar)
+       else:
+           prod_diesel = dato
+    #print(soc)
+    diesel.append(prod_diesel)
+
+
+
+file_path = './richiestaDiesel.csv'
 try:
     os.remove(file_path)
 except OSError as e:
     print("Error: %s : %s" % (file_path, e.strerror))    
 
-with open('tabellaCF.csv', 'w', newline='') as fileOUT:
+with open('richiestaDiesel.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
-     for linea in risultato:
-         writer.writerow(linea)
-
-
-countM = 0
-somma = 0
-sommaVarianzaSotto = 0
-for linea in risultato:
-      count = 0
-      for dato in linea:
-          if(count==8):
-                print(dato)
-                somma = somma + float(dato)
-                sommaVarianzaSotto = sommaVarianzaSotto + pow(float(dato),2)
-                countM = countM + 1
-          count = count +1     
-      #print(count)
-
-
-media = somma/countM
-mediaQuadrato =  sommaVarianzaSotto/countM
-
-varianzaSopra = mediaQuadrato - pow(media,2)
-
-print("Ecco la media: ",media," varianza: ",varianzaSopra)
+     writer.writerows(map(lambda x: [x], diesel))
