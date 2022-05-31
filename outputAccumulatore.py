@@ -93,7 +93,7 @@ for i in range(0,8760):
    # daAppendere.append(float(datiCFsotto[i]))
    # daAppendere.append(float(datiCFsotto[i])*pMax)
     daAppendere.append(float(datiCFoffshoresopra[i]))
-    daAppendere.append(float(datiCFoffshoresopra[i])*15)
+    daAppendere.append(float(datiCFoffshoresopra[i])*6)
   #  daAppendere.append(float(datiCFoffshoresotto[i]))
    # daAppendere.append(float(datiCFoffshoresotto[i])*15)
     #daAppendere.append(float(datiCFonshoresopra[i]))
@@ -106,7 +106,8 @@ for i in range(0,8760):
     #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
     #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
-    daAppendere.append(float(consumo[i])-(float(datiCFsopra[i])*pMax))
+    daAppendere.append(float(consumo[i])-(float(datiCFoffshoresopra[i])*6))
+    #print(float(consumo[i])-(float(datiCFsopra[i])*pMax))
     risultato.append(daAppendere)
 
 
@@ -119,13 +120,17 @@ for linea in risultato:
       for dato in linea:
           if(count==8):
                 energia.append(dato)
+               # print(dato)
           count = count + 1
 
 soc = 0
-effCar = 0.8
-effScar = 0.8
-accumulatore = 800 # suppongo 800 MWh
+effCar = 0.975
+effScar = 0.975
+accumulatore = 500 # suppongo 800 MWh
+maxdelta=0
+prec = 0
 
+count = 0
 for dato in energia:
     prod_diesel = 0
     if(hoEnergiaInPiù(dato)): 
@@ -143,8 +148,20 @@ for dato in energia:
                 prod_diesel = dato - (soc*accumulatore*effScar)
        else:
            prod_diesel = dato
-    #print(soc)
+   # print(abs(soc-prec)*accumulatore)
+   # print("ecco il soc",prec,soc)
+    if((abs(soc-prec)*accumulatore)>maxdelta and abs(soc-prec)!=100):
+        maxdelta = (abs(soc-prec)*accumulatore)
+        max=count
+        socmin= prec
+        socmax= soc
+       # print("ecco",maxdelta)
+    prec = soc
+    count = count + 1
     diesel.append(prod_diesel)
+
+
+print(maxdelta,max,socmin,socmax)
 
 
 

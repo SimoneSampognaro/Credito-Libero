@@ -1,65 +1,23 @@
 import csv
 import os
 import numpy as np
-
+import openpyxl
+file_excel = openpyxl.load_workbook('test.xlsx')
 
 tempo=[]
-with open('./CF_sopra.csv', 'r') as fileTEMP:
+with open('./CF_kawai_wec', 'r') as fileTEMP:
  reader = csv.reader(fileTEMP,delimiter=',')
  for linea in reader:
     tempo = [(linea[0]) for linea in reader]
 
 
 datiCFsopra=[]
-with open('./CF_sopra.csv', 'r') as file:
+with open('./CF_kawai_wec', 'r') as file:
  reader = csv.reader(file,delimiter=',')
  for linea in reader:
     datiCFsopra = [(linea[4]) for linea in reader]
 
 
-datiCFsotto=[]
-with open('./CF_sotto.csv', 'r') as file2:
- reader = csv.reader(file2,delimiter=',')
- for linea in reader:
-    datiCFsotto = [(linea[4]) for linea in reader]
-
-
-datiCFoffshoresopra=[]
-with open('./offshore sopra.csv', 'r') as file3:
- reader = csv.reader(file3,delimiter=';')
- for linea in reader:
-    datiCFoffshoresopra = [(linea[7].replace(",",".")) for linea in reader]
-
-
-datiCFoffshoresotto=[]
-with open('./offshore sotto.csv', 'r') as file4:
- reader = csv.reader(file4,delimiter=';')
- for linea in reader:
-    datiCFoffshoresotto = [(linea[7].replace(",",".")) for linea in reader]
-
-datiCFonshoresopra=[]
-with open('./onshore sopra.csv', 'r') as file4:
- reader = csv.reader(file4,delimiter=';')
- for linea in reader:
-    datiCFonshoresopra = [(linea[7].replace(",",".")) for linea in reader]
-
-datiCFoonshoresotto=[]
-with open('./onshore sotto.csv', 'r') as file5:
- reader = csv.reader(file5,delimiter=';')
- for linea in reader:
-    datiCFoonshoresotto = [(linea[7].replace(",",".")) for linea in reader]
-
-datiCFsolareNORD=[]
-with open('./solare 1MW nord.csv', 'r') as file6:
- reader = csv.reader(file6,delimiter=';')
- for linea in reader:
-    datiCFsolareNORD = [(linea[7].replace(",",".")) for linea in reader]
-
-datiCFsolareSUD=[]
-with open('./solare 1MW sud.csv', 'r') as file7:
- reader = csv.reader(file7,delimiter=';')
- for linea in reader:
-    datiCFsolareSUD = [(linea[7].replace(",",".")) for linea in reader]
 
 consumo=[]
 with open('./carico elettrico.csv', 'r') as file8:
