@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 def possoAccumulare(soc,effCar,dato,accumulatore):
-       return ((100-soc)*accumulatore<(abs(dato)*effCar))
+       return ((((100-soc)/100)*accumulatore)>abs(dato)*effCar)
 
 def hoEnergiaInPiù(dato):
     return dato<0
@@ -15,7 +15,7 @@ def socNonZero(soc):
     return soc>0
 
 def possoPrelevare(soc,effScar,accumulatore,dato):
-    return ((soc*accumulatore)>(dato/effScar))
+    return (((soc/100)*accumulatore)>(dato/effScar))
 
 tempo=[]
 with open('./CF_sopra.csv', 'r') as fileTEMP:
@@ -106,33 +106,47 @@ for i in range(0,8760):
     #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
     #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
-    daAppendere.append(float(consumo[i])-(float(datiCFoffshoresopra[i])*6))
+    daAppendere.append(float(consumo[i])-((float(datiCFsopra[i])*pMax)*2)-(float(datiCFsolareNORD[i])))
     #print(float(consumo[i])-(float(datiCFsopra[i])*pMax))
     risultato.append(daAppendere)
 
 
+file_path = './ModelloElettricoSanDomino.csv'
+try:
+    os.remove(file_path)
+except OSError as e:
+    print("Error: %s : %s" % (file_path, e.strerror))    
+
+with open('ModelloElettricoSanDomino.csv', 'w', newline='') as fileOUT:
+     writer = csv.writer(fileOUT)
+     for linea in risultato:
+         writer.writerow(linea)
 
 energia=[]
 diesel=[]
+socLista=[]
 
 for linea in risultato:
       count = 0
       for dato in linea:
           if(count==8):
                 energia.append(dato)
-               # print(dato)
           count = count + 1
 
 soc = 0
 effCar = 0.975
 effScar = 0.975
-accumulatore = 500 # suppongo 800 MWh
+accumulatore = 100 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 
 count = 0
 for dato in energia:
     prod_diesel = 0
+    daApp=[]
+    daApp.append(dato)
+    daApp.append(soc)
+    socLista.append(daApp)
     if(hoEnergiaInPiù(dato)): 
       if(socNonCento(soc)):
          if(possoAccumulare(soc,effCar,dato,accumulatore)):
@@ -150,19 +164,18 @@ for dato in energia:
            prod_diesel = dato
    # print(abs(soc-prec)*accumulatore)
    # print("ecco il soc",prec,soc)
-    if((abs(soc-prec)*accumulatore)>maxdelta and abs(soc-prec)!=100):
-        maxdelta = (abs(soc-prec)*accumulatore)
-        max=count
-        socmin= prec
-        socmax= soc
+  #  if((abs(soc-prec)*accumulatore)>maxdelta and abs(soc-prec)!=100):
+   #     maxdelta = (abs(soc-prec)*accumulatore)
+    #    max=count
+    #    socmin= prec
+    #    socmax= soc
        # print("ecco",maxdelta)
-    prec = soc
-    count = count + 1
+   # prec = soc
+   # count = count + 1
     diesel.append(prod_diesel)
 
 
-print(maxdelta,max,socmin,socmax)
-
+#print(maxdelta,max,socmin,socmax)
 
 
 file_path = './richiestaDiesel.csv'
@@ -174,3 +187,17 @@ except OSError as e:
 with open('richiestaDiesel.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      writer.writerows(map(lambda x: [x], diesel))
+
+"""
+with open('soc.csv', 'w', newline='') as fileOUT2:
+     writer = csv.writer(fileOUT2)
+     for linea in socLista:
+       writer.writerow(linea)
+       """
+"""
+soc = 0
+for dato in energia:
+    prod_diesel=0
+    if(dato<0):
+        if(soc<100):
+            if(((100-soc)/100)*accumulatore>"""
