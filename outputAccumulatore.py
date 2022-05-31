@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 def possoAccumulare(soc,effCar,dato,accumulatore):
-       return ((100-soc)*accumulatore<(dato*effCar))
+       return ((100-soc)*accumulatore<(abs(dato)*effCar))
 
 def hoEnergiaInPiù(dato):
     return dato<0
@@ -131,7 +131,7 @@ for dato in energia:
     if(hoEnergiaInPiù(dato)): 
       if(socNonCento(soc)):
          if(possoAccumulare(soc,effCar,dato,accumulatore)):
-             soc = soc + ((dato*effCar*100)/accumulatore)
+             soc = soc + ((abs(dato)*effCar*100)/accumulatore)
          else:
              soc = 100
     else:
