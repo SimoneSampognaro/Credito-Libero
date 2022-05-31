@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 def possoAccumulare(soc,effCar,dato,accumulatore):
-       return ((100-soc)*accumulatore<(abs(dato)*effCar))
+       return ((100-soc)*accumulatore>(abs(dato)*effCar))
 
 def hoEnergiaInPiù(dato):
     return dato<0
@@ -89,7 +89,6 @@ accumulatore = 100 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 
-count = 0
 for dato in energia:
     prod_diesel = 0
     if(hoEnergiaInPiù(dato)): 
@@ -107,9 +106,13 @@ for dato in energia:
                 prod_diesel = dato - (soc*accumulatore*effScar)
        else:
            prod_diesel = dato
-    print(soc)
+
+    if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
+        maxdelta = ((abs(soc-prec)/100)*accumulatore)
+    prec = soc
     diesel.append(prod_diesel)
 
+print(maxdelta)
 
 file_path = './richiestaDieselKawai.csv'
 try:

@@ -127,7 +127,6 @@ accumulatore = 100 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 
-count = 0
 for dato in energia:
     prod_diesel = 0
     if(hoEnergiaInPiù(dato)): 
