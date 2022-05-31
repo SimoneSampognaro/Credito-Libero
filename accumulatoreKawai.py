@@ -42,6 +42,11 @@ with open('./caricokawai.csv', 'r') as file8:
  for linea in reader:
     consumo = [(linea[1].replace(",",".")) for linea in reader]
 
+for line in consumo:
+    num = line *359839
+    print(num)
+
+
 pMax = 76891.2000390625/1000000
 risultato=[]
 
@@ -53,8 +58,8 @@ for i in range(0,8760):
     daAppendere.append(float(wec[i])*pMax)
     daAppendere.append(float(eolico[i]))
     daAppendere.append(float(eolico[i])*18)
-    daAppendere.append(float(consumo[i])*449798)
-    daAppendere.append((float(consumo[i])*449798)-((float(wec[i])*pMax)*2)-((float(eolico[i])*18)*5))
+    daAppendere.append(float(consumo[i])*359839)
+    daAppendere.append((float(consumo[i])*359839)-((float(wec[i])*pMax)*2)-((float(eolico[i])*18)*5))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
 
