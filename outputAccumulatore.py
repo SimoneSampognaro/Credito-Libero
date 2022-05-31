@@ -90,24 +90,12 @@ for i in range(0,8760):
     daAppendere.append(tempo[i])
     daAppendere.append(float(datiCFsopra[i]))
     daAppendere.append(float(datiCFsopra[i])*pMax)
-   # daAppendere.append(float(datiCFsotto[i]))
-   # daAppendere.append(float(datiCFsotto[i])*pMax)
     daAppendere.append(float(datiCFoffshoresopra[i]))
     daAppendere.append(float(datiCFoffshoresopra[i])*6)
-  #  daAppendere.append(float(datiCFoffshoresotto[i]))
-   # daAppendere.append(float(datiCFoffshoresotto[i])*15)
-    #daAppendere.append(float(datiCFonshoresopra[i]))
-    #daAppendere.append(float(datiCFonshoresopra[i])*15)
-    #daAppendere.append(float(datiCFoonshoresotto[i]))
-    #daAppendere.append(float(datiCFoonshoresotto[i])*15)
     daAppendere.append(float(datiCFsolareNORD[i]))
     daAppendere.append(float(datiCFsolareNORD[i])*4)
-    #daAppendere.append(float(datiCFsolareSUD[i]))
-    #daAppendere.append(float(datiCFsolareSUD[i])*4)
     daAppendere.append(float(consumo[i]))
-    #daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4)-(float(datiCFoffshoresopra[i])*15)-((float(datiCFsopra[i])*pMax)))
     daAppendere.append(float(consumo[i])-((float(datiCFsopra[i])*pMax)*2)-(float(datiCFsolareNORD[i])))
-    #print(float(consumo[i])-(float(datiCFsopra[i])*pMax))
     risultato.append(daAppendere)
 
 
@@ -124,7 +112,6 @@ with open('ModelloElettricoSanDomino.csv', 'w', newline='') as fileOUT:
 
 energia=[]
 diesel=[]
-socLista=[]
 
 for linea in risultato:
       count = 0
@@ -143,10 +130,6 @@ prec = 0
 count = 0
 for dato in energia:
     prod_diesel = 0
-    daApp=[]
-    daApp.append(dato)
-    daApp.append(soc)
-    socLista.append(daApp)
     if(hoEnergiaInPiù(dato)): 
       if(socNonCento(soc)):
          if(possoAccumulare(soc,effCar,dato,accumulatore)):
@@ -162,21 +145,13 @@ for dato in energia:
                 prod_diesel = dato - (soc*accumulatore*effScar)
        else:
            prod_diesel = dato
-   # print(abs(soc-prec)*accumulatore)
-   # print("ecco il soc",prec,soc)
-  #  if((abs(soc-prec)*accumulatore)>maxdelta and abs(soc-prec)!=100):
-   #     maxdelta = (abs(soc-prec)*accumulatore)
-    #    max=count
-    #    socmin= prec
-    #    socmax= soc
-       # print("ecco",maxdelta)
-   # prec = soc
-   # count = count + 1
+
+    if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
+        maxdelta = ((abs(soc-prec)/100)*accumulatore)
+    prec = soc
     diesel.append(prod_diesel)
 
-
-#print(maxdelta,max,socmin,socmax)
-
+print(maxdelta)
 
 file_path = './richiestaDiesel.csv'
 try:
