@@ -158,7 +158,7 @@ try:
 except OSError as e:
     print("Error: %s : %s" % (file_path, e.strerror))    
 
-with open('richiestaDiesel.csv', 'w', newline='') as fileOUT:
+with open('richiestaDieselSanDomino.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      writer.writerows(map(lambda x: [x], diesel))
 
