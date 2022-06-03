@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 def possoAccumulare(soc,effCar,dato,accumulatore):
-       return ((100-soc)*accumulatore>(abs(dato)*effCar))
+       return (((100-soc)/100)*accumulatore>(abs(dato)*effCar))
 
 def hoEnergiaInPiù(dato):
     return dato<0
@@ -16,7 +16,8 @@ def socNonZero(soc):
     return soc>0
 
 def possoPrelevare(soc,effScar,accumulatore,dato):
-    return ((soc*accumulatore)>(dato/effScar))
+    #print("soc*accumulatore: ",(soc*accumulatore),"dato/effscar: ",(dato/effScar))
+    return (((soc/100)*accumulatore)>(dato/effScar))
 
 
 tempo=[]
@@ -94,6 +95,7 @@ effScar = 0.975
 accumulatore = 100 # suppongo 100 MWh
 maxdelta=0
 prec = 0
+
 totale = 0
 for dato in energia:
     prod_diesel = 0
@@ -101,12 +103,14 @@ for dato in energia:
       if(socNonCento(soc)):
          if(possoAccumulare(soc,effCar,dato,accumulatore)):
              soc = soc + ((abs(dato)*effCar*100)/accumulatore)
+            # print("soc: ",soc," + ","parentesi: ",(abs(dato)*effCar*100)/accumulatore)
          else:
              soc = 100
     else:
        if(socNonZero(soc)):
            if(possoPrelevare(soc,effScar,accumulatore,dato)):
-               soc = soc - ((dato*100)/accumulatore*effScar)
+               soc = soc - ((abs(dato)*100)/accumulatore*effScar)
+              # print("soc: ",soc," - ","parentesi: ",(((abs(dato)*100)/accumulatore)*effScar))
            else:
                 soc = 0
                 prod_diesel = dato - (soc*accumulatore*effScar)
@@ -115,11 +119,12 @@ for dato in energia:
 
     if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
         maxdelta = ((abs(soc-prec)/100)*accumulatore)
+        print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
     prec = soc
     totale = totale + prod_diesel
     diesel.append(prod_diesel)
 
-#print(maxdelta)
+print(maxdelta)
 
 file_path = './richiestaDieselKawai.csv'
 try:
@@ -143,5 +148,14 @@ for dato in totalediesel:
 """
 print(totale)
 
-costototale = 3185 * 1000 * 144 
+costoimpianti = 3185 * 1000 * 144 
+print("Costo impianti :",costoimpianti)
+
+costoAccumulatore = 525000 * maxdelta + 160000 * accumulatore 
+
+print("Costo accumulatore : ",costoAccumulatore)
+
+costototale = costoAccumulatore + costoimpianti
+
 print("Costo totale :",costototale)
+
