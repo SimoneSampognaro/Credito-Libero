@@ -95,7 +95,7 @@ for i in range(0,8760):
     daAppendere.append(float(datiCFsolareNORD[i]))
     daAppendere.append(float(datiCFsolareNORD[i])*4)
     daAppendere.append(float(consumo[i]))
-    daAppendere.append(float(consumo[i])-((float(datiCFsopra[i])*pMax)*5)-(float(datiCFsolareNORD[i])*2))
+    daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*4))
     risultato.append(daAppendere)
 
 
@@ -179,11 +179,10 @@ for dato in energia:
         if(soc<100):
             if(((100-soc)/100)*accumulatore>"""
 
-print(totale)
+print("Necessario diesel:",totale)
 
-costoimpianti = 883 * 1000 * 2 + 7100 * 1000 * pMax * 5
-
-print("Costo totale :",costoimpianti)
+costoimpianti = 883 * 1000 * 4 
+print("Costo impianti :",costoimpianti)
 
 costoAccumulatore = 525000 * maxdelta + 160000 * accumulatore 
 
