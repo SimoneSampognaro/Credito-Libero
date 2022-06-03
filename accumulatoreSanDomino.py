@@ -95,7 +95,7 @@ for i in range(0,8760):
     daAppendere.append(float(datiCFsolareNORD[i]))
     daAppendere.append(float(datiCFsolareNORD[i])*4)
     daAppendere.append(float(consumo[i]))
-    daAppendere.append(float(consumo[i])-((float(datiCFsopra[i])*pMax)*2)-(float(datiCFsolareNORD[i])))
+    daAppendere.append(float(consumo[i])-(float(datiCFoffshoresopra[i])*6))
     risultato.append(daAppendere)
 
 
@@ -126,6 +126,7 @@ effScar = 0.975
 accumulatore = 100 # suppongo 100 MWh
 maxdelta=0
 prec = 0
+totale = 0
 
 for dato in energia:
     prod_diesel = 0
@@ -148,6 +149,7 @@ for dato in energia:
     if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
         maxdelta = ((abs(soc-prec)/100)*accumulatore)
     prec = soc
+    totale = totale + prod_diesel
     diesel.append(prod_diesel)
 
 print(maxdelta)
@@ -175,3 +177,9 @@ for dato in energia:
     if(dato<0):
         if(soc<100):
             if(((100-soc)/100)*accumulatore>"""
+
+print(totale)
+
+costototale = 3185 * 1000 * 6
+
+print("Costo totale :",costototale)

@@ -1,4 +1,5 @@
 import csv
+from logging.handlers import TimedRotatingFileHandler
 import os
 import numpy as np
 
@@ -44,7 +45,7 @@ with open('./caricokawai.csv', 'r') as file8:
 
 for line in consumo:
     num = line *359839
-    print(num)
+    #print(num)
 
 
 pMax = 76891.2000390625/1000000
@@ -59,7 +60,7 @@ for i in range(0,8760):
     daAppendere.append(float(eolico[i]))
     daAppendere.append(float(eolico[i])*18)
     daAppendere.append(float(consumo[i])*359839)
-    daAppendere.append((float(consumo[i])*359839)-((float(wec[i])*pMax)*2)-((float(eolico[i])*18)*5))
+    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*8))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
 
@@ -93,7 +94,7 @@ effScar = 0.975
 accumulatore = 100 # suppongo 100 MWh
 maxdelta=0
 prec = 0
-
+totale = 0
 for dato in energia:
     prod_diesel = 0
     if(hoEnergiaInPiù(dato)): 
@@ -115,9 +116,10 @@ for dato in energia:
     if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
         maxdelta = ((abs(soc-prec)/100)*accumulatore)
     prec = soc
+    totale = totale + prod_diesel
     diesel.append(prod_diesel)
 
-print(maxdelta)
+#print(maxdelta)
 
 file_path = './richiestaDieselKawai.csv'
 try:
@@ -128,3 +130,18 @@ except OSError as e:
 with open('richiestaDieselKawai.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      writer.writerows(map(lambda x: [x], diesel))
+
+"""
+totalediesel=[]
+with open('./richiestaDieselKawai.csv', 'r') as filen:
+ reader = csv.reader(filen,delimiter=',')
+ for linea in reader:
+    totalediesel = [(linea[0]) for linea in reader]
+totale = 0
+for dato in totalediesel:
+    totale = totale + float(dato)
+"""
+print(totale)
+
+costototale = 3185 * 1000 * 144 
+print("Costo totale :",costototale)
