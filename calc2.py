@@ -99,7 +99,7 @@ for i in range(0,8760):
    # sol = sol + float(datiCFsolareNORD[i])*2
     daAppendere.append(float(consumo[i]))
     daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*2))
-    #energiaProdotta = energiaProdotta + (float(datiCFsolareNORD[i])) + (float(datiCFsopra[i])*pMax)*2
+   # energiaProdotta = energiaProdotta + (float(datiCFsolareNORD[i]))*2
     risultato.append(daAppendere)
 
 #print("Energia prodotta",energiaProdotta)
