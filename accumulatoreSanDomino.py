@@ -187,7 +187,7 @@ for dato in energia:
 
 print("Necessario diesel:",totale)
 
-costoimpianti = 883 * 1000 + 7100 * 1000 * pMax * 2
+costoimpianti = 883 * 1000 + 7611 * 1000 * pMax * 2
 print("Costo impianti :",costoimpianti)
 
 costoAccumulatore = 525000 * maxdelta + 160000 * accumulatore 
