@@ -129,7 +129,7 @@ for linea in risultato:
 soc = 0
 effCar = 0.975
 effScar = 0.975
-accumulatore = 5 # suppongo 100 MWh
+accumulatore = 10 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 totale = 0

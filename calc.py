@@ -84,6 +84,7 @@ with open('./carico elettrico.csv', 'r') as file8:
 pMax = 76891.2000390625/1000000
 risultato=[]
 sol=0
+energiaProdotta = 0
 #risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra,  CF OFS sotto, CF ONS sopra, CF ONS sotto, CF sun sopra, Y FV installato sopra, CF sun sotto, Y FV installato sotto, consumo"])
 risultato.append(["Tempo, CF wec, produzione WEC, CF eolico, produzione EOLICO, CF FV, produzione FV, consumo elettrico, produzione diesel"])
 for i in range(0,8760):
@@ -98,8 +99,10 @@ for i in range(0,8760):
    # sol = sol + float(datiCFsolareNORD[i])*2
     daAppendere.append(float(consumo[i]))
     daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i]))-(float(datiCFsopra[i])*pMax)*2)
+    energiaProdotta = energiaProdotta + (float(datiCFsolareNORD[i])) + (float(datiCFsopra[i])*pMax)*2
     risultato.append(daAppendere)
 
+print("Energia prodotta",energiaProdotta)
 #print("PRODUZIONE SOLARE: ",sol)
 file_path = './ModelloElettricoSanDomino.csv'
 try:
@@ -155,7 +158,7 @@ for dato in energia:
     totale = totale + prod_diesel
     diesel.append(prod_diesel)
 
-print(maxdelta)
+#print(maxdelta)
 """
 file_path = './richiestaDiesel.csv'
 try:
@@ -183,10 +186,10 @@ for dato in energia:
 
 print("Necessario diesel:",totale)
 
-costoimpianti = 883 * 1000 + 7100 * 1000 * 2 * pMax 
+costoimpianti = 971 * 1000 + 6164 * 1000 * 2 * pMax 
 print("Costo impianti :",costoimpianti)
 
-costoAccumulatore = 525000 * maxdelta + 160000 * accumulatore 
+costoAccumulatore = 320000 * maxdelta + 100000 * accumulatore 
 
 print("Costo accumulatore : ",costoAccumulatore)
 
@@ -195,3 +198,22 @@ costodiesel = totale * 390
 costototale = costoAccumulatore + costoimpianti + costodiesel
 
 print("Costo totale :",costototale)
+
+#accumulatore 5 mw no OPEX!! CALCOLO 2030!!!!!!!!!!!
+
+capexAnnoZero = 971 * 1000 + 6164 * 1000 * 2 * pMax + costoAccumulatore
+t = 25 #tempo di vita
+r = 0.025 #discount ratio
+opex = 10 * 1000 + totale * 390 + ((6164 * 1000 * 2 * pMax * 3)/100) # No manutenzione accumulatore 
+capexAnnoDodici = (costoAccumulatore/pow(1+r,12)) + (6164 * 1000 * 2 * pMax/pow(1+r,12)) # cambio accumulatore e wec
+
+opexTot = 0
+energiaProdottaTot = 0
+
+for i in range(0,t):
+      opexTot = opexTot + (opex/pow(1+r,i))
+      energiaProdottaTot = energiaProdottaTot + (energiaProdotta/pow(1+r,i))
+
+LCOE = (capexAnnoDodici+capexAnnoZero+opexTot)/energiaProdottaTot
+
+print("Ecco LCOE: ",round(LCOE,0),"USD/MWh")
