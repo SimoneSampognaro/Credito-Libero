@@ -57,7 +57,7 @@ energiaProdottaTot = 0
 
 t = 20 #tempo di vita
 
-for i in range(0,t):
+for i in range(0,20):
       opexTot = opexTot + (opex_wec/pow(1+r,i))
       energiaProdottaTot = energiaProdottaTot + (energiaProdottaWec/pow(1+r,i))
 

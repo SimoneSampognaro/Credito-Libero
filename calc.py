@@ -97,7 +97,7 @@ for i in range(0,8760):
     daAppendere.append(float(datiCFsolareNORD[i])*4)
    # sol = sol + float(datiCFsolareNORD[i])*2
     daAppendere.append(float(consumo[i]))
-    daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i]))-(float(datiCFsopra[i])*pMax))
+    daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i]))-(float(datiCFsopra[i])*pMax)*2)
     risultato.append(daAppendere)
 
 #print("PRODUZIONE SOLARE: ",sol)
@@ -156,7 +156,7 @@ for dato in energia:
     diesel.append(prod_diesel)
 
 print(maxdelta)
-
+"""
 file_path = './richiestaDiesel.csv'
 try:
     os.remove(file_path)
@@ -166,7 +166,7 @@ except OSError as e:
 with open('richiestaDieselSanDomino.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      writer.writerows(map(lambda x: [x], diesel))
-
+"""
 """
 with open('soc.csv', 'w', newline='') as fileOUT2:
      writer = csv.writer(fileOUT2)
@@ -183,13 +183,15 @@ for dato in energia:
 
 print("Necessario diesel:",totale)
 
-costoimpianti = 883 * 1000 * 4 
+costoimpianti = 883 * 1000 + 7100 * 1000 * 2 * pMax 
 print("Costo impianti :",costoimpianti)
 
 costoAccumulatore = 525000 * maxdelta + 160000 * accumulatore 
 
 print("Costo accumulatore : ",costoAccumulatore)
 
-costototale = costoAccumulatore + costoimpianti
+costodiesel = totale * 390
+
+costototale = costoAccumulatore + costoimpianti + costodiesel
 
 print("Costo totale :",costototale)
