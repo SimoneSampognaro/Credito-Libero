@@ -66,14 +66,14 @@ LCOE_wec = (capex_wec+opexTot)/energiaProdottaTot
 print("Ecco LCOE Wec: ",round(LCOE_wec,0)," USD/MWh")
 
 
-# Global Solar Atlas 1799.2 KWh/m^2
+# Global Solar Atlas 1820 KWh/m^2 CONSIDERO 2MW INSTALLATi
 
-energiaProdottaFV  = 1496 # MWh
+energiaProdottaFV  = 3002 # MWh
 #(1799 * 20000) / 1000 # rettangolo da 100 x 200 m
 
 r = 0.025 #discount ratio
-capex_FV = 883 * 1000 # considero 2 MWh di solare installato 
-opex_FV = 14 * 1000 
+capex_FV = 971 * 1000 * 2 # considero 2 MWh di solare installato 
+opex_FV = 10 * 1000 * 2
 
 opexTot = 0
 energiaProdottaTot = 0
