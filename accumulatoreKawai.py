@@ -20,6 +20,8 @@ def possoPrelevare(soc,effScar,accumulatore,dato):
     return (((soc/100)*accumulatore)>(dato/effScar))
 
 sommaCFwind=0
+sommaCFwec = 0
+sommaProdwec = 0
 sommaProdWind=0
 consumoTOT = 0
 socMedio = 0
@@ -61,17 +63,19 @@ risultato.append(["Tempo, CF eolico offshore, produzione EOLICO offshore, consum
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
-  #  daAppendere.append(float(wec[i]))
-  #  daAppendere.append(float(wec[i])*pMax)
+    daAppendere.append(float(wec[i]))
+    daAppendere.append(float(wec[i])*pMax*2)
     daAppendere.append(float(eolico[i]))
-    daAppendere.append(float(eolico[i])*18*8)
+    daAppendere.append(float(eolico[i])*18*5)
     daAppendere.append(float(consumo[i])*359839)
-    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*8))
+    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*5)-(float(wec[i])*pMax*2))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
     sommaCFwind= (float(eolico[i])) + sommaCFwind
-    sommaProdWind= (float(eolico[i])*18*8) + sommaProdWind
+    sommaProdWind= (float(eolico[i])*18*5) + sommaProdWind
     consumoTOT = consumoTOT + (float(consumo[i])*359839)
+    sommaCFwec = sommaCFwec + (float(wec[i]))
+    sommaProdwec = sommaProdwec + (float(wec[i])*pMax*2)
     #prod_dieselTOT = prod_dieselTOT + (float(consumo[i])*359839)-((float(eolico[i])*18)*8)
 
 
@@ -83,7 +87,7 @@ diesel=[]
 for linea in risultato:
       count = 0
       for dato in linea:
-          if(count==4):
+          if(count==6):
                 energia.append(dato)
                 print(dato)
           count = count + 1
@@ -91,7 +95,7 @@ for linea in risultato:
 soc = 0
 effCar = 0.975
 effScar = 0.975
-accumulatore = 100 # suppongo 100 MWh
+accumulatore = 50 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 check = 0
@@ -118,7 +122,7 @@ for dato in energia:
 
     if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
         maxdelta = ((abs(soc-prec)/100)*accumulatore)
-        print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
+      #  print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
   #  if(check>0):
   #      risultato.append(abs(prec-soc)*accumulatore)
     check = check + 1
@@ -139,7 +143,7 @@ with open('ModelloElettricoKawai.csv', 'w', newline='') as fileOUT:
      for linea in risultato:
          writer.writerow(linea)
 
-print(maxdelta)
+#print(maxdelta)
 
 file_path = './richiestaDieselKawai.csv'
 try:
@@ -177,5 +181,6 @@ print("Costo totale :",costototale)
 
 sommaCFwind= sommaCFwind/8760
 socMedio = socMedio/8760
+sommaCFwec = sommaCFwec/8760
 
-print("CF_wind medio: ",sommaCFwind,"prodTOT_wind: ",sommaProdWind,"consumoTOT: ",consumoTOT,"socMedio: ",socMedio,"ProdDieselTOT: ",totale)
+print("CF_wind medio: ",sommaCFwind,"prodTOT_wind: ",sommaProdWind,"CF_wec medio: ",sommaCFwec,"prodTOT_wec: ",sommaProdwec,"consumoTOT: ",consumoTOT,"socMedio: ",socMedio,"ProdDieselTOT: ",totale)
