@@ -61,7 +61,7 @@ for i in range(0,8760):
     daAppendere.append(float(eolico[i]))
     daAppendere.append(float(eolico[i])*18)
     daAppendere.append(float(consumo[i])*359839)
-    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*5)-(float(wec[i])*pMax)*2)
+    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*8))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
 
@@ -92,7 +92,7 @@ for linea in risultato:
 soc = 0
 effCar = 0.975
 effScar = 0.975
-accumulatore = 100 # suppongo 100 MWh
+accumulatore = 50 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 
@@ -119,13 +119,13 @@ for dato in energia:
 
     if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
         maxdelta = ((abs(soc-prec)/100)*accumulatore)
-        print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
+       # print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
     prec = soc
     totale = totale + prod_diesel
     diesel.append(prod_diesel)
 
-print(maxdelta)
-
+#print(maxdelta)
+"""
 file_path = './richiestaDieselKawai.csv'
 try:
     os.remove(file_path)
@@ -135,7 +135,7 @@ except OSError as e:
 with open('richiestaDieselKawai.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      writer.writerows(map(lambda x: [x], diesel))
-
+"""
 """
 totalediesel=[]
 with open('./richiestaDieselKawai.csv', 'r') as filen:
@@ -148,14 +148,34 @@ for dato in totalediesel:
 """
 print(totale)
 
-costoimpianti = 3185 * 1000 * 144 
+costoimpianti = 4310 * 1000 * 18 * 8 # 8 turbine
 print("Costo impianti :",costoimpianti)
 
-costoAccumulatore = 525000 * maxdelta + 160000 * accumulatore 
+costoAccumulatore = 320000 * maxdelta + 100000 * accumulatore  
 
 print("Costo accumulatore : ",costoAccumulatore)
 
-costototale = costoAccumulatore + costoimpianti
+costodiesel = 291 * totale
+
+costototale = costoAccumulatore + costoimpianti + costodiesel
 
 print("Costo totale :",costototale)
+
+capexAnnoZero = 971 * 1000 + costoAccumulatore
+t = 25 #tempo di vita
+r = 0.025 #discount ratio
+opex = 10 * 1000 * 2 + totale * 390 + (costoAccumulatore/100) #  manutenzione accumulatore 
+capexAnnoDodici = (costoAccumulatore/pow(1+r,12)) # cambio accumulatore 
+energiaProdotta = 3002
+
+opexTot = 0
+energiaProdottaTot = 0
+
+for i in range(0,t):
+      opexTot = opexTot + (opex/pow(1+r,i))
+      energiaProdottaTot = energiaProdottaTot + (energiaProdotta/pow(1+r,i))
+
+LCOE = (capexAnnoDodici+capexAnnoZero+opexTot)/energiaProdottaTot
+
+print("Ecco LCOE: ",round(LCOE,0),"USD/MWh")
 
