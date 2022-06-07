@@ -161,18 +161,22 @@ costototale = costoAccumulatore + costoimpianti + costodiesel
 
 print("Costo totale :",costototale)
 
-capexAnnoZero = 971 * 1000 + costoAccumulatore
+CF = 0.51
+energiaProdotta = CF * 0.9 * 8760 * 18 * 8
+
 t = 25 #tempo di vita
 r = 0.025 #discount ratio
-opex = 10 * 1000 * 2 + totale * 390 + (costoAccumulatore/100) #  manutenzione accumulatore 
-capexAnnoDodici = (costoAccumulatore/pow(1+r,12)) # cambio accumulatore 
-energiaProdotta = 3002
+
+capexAnnoZero = 4310 * 1000 * 18 * 8 + costoAccumulatore
+
+opex_wind = (capexAnnoZero*3)/100 + costodiesel + (costoAccumulatore/100)
+capexAnnoDodici = (costoAccumulatore/pow(1+r,12))
 
 opexTot = 0
 energiaProdottaTot = 0
 
 for i in range(0,t):
-      opexTot = opexTot + (opex/pow(1+r,i))
+      opexTot = opexTot + (opex_wind/pow(1+r,i))
       energiaProdottaTot = energiaProdottaTot + (energiaProdotta/pow(1+r,i))
 
 LCOE = (capexAnnoDodici+capexAnnoZero+opexTot)/energiaProdottaTot
