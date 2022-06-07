@@ -19,6 +19,11 @@ def possoPrelevare(soc,effScar,accumulatore,dato):
     #print("soc*accumulatore: ",(soc*accumulatore),"dato/effscar: ",(dato/effScar))
     return (((soc/100)*accumulatore)>(dato/effScar))
 
+sommaCFwind=0
+sommaProdWind=0
+consumoTOT = 0
+socMedio = 0
+prod_dieselTOT = 0
 
 tempo=[]
 with open('./wecK.csv', 'r') as fileTEMP:
@@ -59,11 +64,15 @@ for i in range(0,8760):
   #  daAppendere.append(float(wec[i]))
   #  daAppendere.append(float(wec[i])*pMax)
     daAppendere.append(float(eolico[i]))
-    daAppendere.append(float(eolico[i])*18)
+    daAppendere.append(float(eolico[i])*18*8)
     daAppendere.append(float(consumo[i])*359839)
     daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*8))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
+    sommaCFwind= (float(eolico[i])) + sommaCFwind
+    sommaProdWind= (float(eolico[i])*18*8) + sommaProdWind
+    consumoTOT = consumoTOT + (float(consumo[i])*359839)
+    #prod_dieselTOT = prod_dieselTOT + (float(consumo[i])*359839)-((float(eolico[i])*18)*8)
 
 
 
@@ -74,9 +83,9 @@ diesel=[]
 for linea in risultato:
       count = 0
       for dato in linea:
-          if(count==6):
+          if(count==4):
                 energia.append(dato)
-                #print(dato)
+                print(dato)
           count = count + 1
 
 soc = 0
@@ -112,7 +121,8 @@ for dato in energia:
         print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
   #  if(check>0):
   #      risultato.append(abs(prec-soc)*accumulatore)
-    check = check + 1        
+    check = check + 1
+    socMedio = socMedio + soc        
     prec = soc
     totale = totale + prod_diesel
     diesel.append(prod_diesel)
@@ -164,3 +174,8 @@ costototale = costoAccumulatore + costoimpianti
 
 print("Costo totale :",costototale)
 
+
+sommaCFwind= sommaCFwind/8760
+socMedio = socMedio/8760
+
+print("CF_wind medio: ",sommaCFwind,"prodTOT_wind: ",sommaProdWind,"consumoTOT: ",consumoTOT,"socMedio: ",socMedio,"ProdDieselTOT: ",totale)
