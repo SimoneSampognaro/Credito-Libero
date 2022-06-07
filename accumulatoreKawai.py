@@ -52,30 +52,20 @@ for line in consumo:
 pMax = 76891.2000390625/1000000
 risultato=[]
 
-risultato.append(["Tempo, CF wec, produzione WEC, CF eolico offshore, produzione EOLICO offshore, consumo elettrico, produzione diesel"])
+risultato.append(["Tempo, CF eolico offshore, produzione EOLICO offshore, consumo elettrico, produzione diesel"])
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
-    daAppendere.append(float(wec[i]))
-    daAppendere.append(float(wec[i])*pMax)
+  #  daAppendere.append(float(wec[i]))
+  #  daAppendere.append(float(wec[i])*pMax)
     daAppendere.append(float(eolico[i]))
     daAppendere.append(float(eolico[i])*18)
     daAppendere.append(float(consumo[i])*359839)
-    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*5)-(float(wec[i])*pMax)*2)
+    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*8))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
 
 
-file_path = './ModelloElettricoKawai.csv'
-try:
-    os.remove(file_path)
-except OSError as e:
-    print("Error: %s : %s" % (file_path, e.strerror))    
-
-with open('ModelloElettricoKawai.csv', 'w', newline='') as fileOUT:
-     writer = csv.writer(fileOUT)
-     for linea in risultato:
-         writer.writerow(linea)
 
 
 energia=[]
@@ -95,7 +85,7 @@ effScar = 0.975
 accumulatore = 100 # suppongo 100 MWh
 maxdelta=0
 prec = 0
-
+check = 0
 totale = 0
 for dato in energia:
     prod_diesel = 0
@@ -120,9 +110,24 @@ for dato in energia:
     if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
         maxdelta = ((abs(soc-prec)/100)*accumulatore)
         print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
+  #  if(check>0):
+  #      risultato.append(abs(prec-soc)*accumulatore)
+    check = check + 1        
     prec = soc
     totale = totale + prod_diesel
     diesel.append(prod_diesel)
+
+
+file_path = './ModelloElettricoKawai.csv'
+try:
+    os.remove(file_path)
+except OSError as e:
+    print("Error: %s : %s" % (file_path, e.strerror))    
+
+with open('ModelloElettricoKawai.csv', 'w', newline='') as fileOUT:
+     writer = csv.writer(fileOUT)
+     for linea in risultato:
+         writer.writerow(linea)
 
 print(maxdelta)
 
