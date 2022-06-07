@@ -94,27 +94,27 @@ risultato=[]
 sommaProdsol= 0
 sommaCFsol = 0
 #risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra,  CF OFS sotto, CF ONS sopra, CF ONS sotto, CF sun sopra, Y FV installato sopra, CF sun sotto, Y FV installato sotto, consumo"])
-risultato.append(["Tempo, CF wec, produzione WEC, CF FV, produzione FV, consumo elettrico, produzione diesel"])
+risultato.append(["Tempo, CF wec, produzione WEC, consumo elettrico, produzione diesel"])
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
-    daAppendere.append(float(datiCFsopra[i]))
-    daAppendere.append(float(datiCFsopra[i])*pMax*2)
+    #daAppendere.append(float(datiCFsopra[i]))
+   # daAppendere.append(float(datiCFsopra[i])*pMax*2)
     #daAppendere.append(float(datiCFoffshoresopra[i]))
    # Cf_sol = Cf_sol + float(datiCFsolareNORD[i])
    # daAppendere.append(float(datiCFoffshoresopra[i])*5)
     daAppendere.append(float(datiCFsolareNORD[i]))
-    daAppendere.append(float(datiCFsolareNORD[i]))
+    daAppendere.append(float(datiCFsolareNORD[i])*2)
    # sol = sol + float(datiCFsolareNORD[i])*2
     daAppendere.append(float(consumo[i]))
-    daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i]))-(float(datiCFsopra[i])*pMax)*2)
+    daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i])*2))
     risultato.append(daAppendere)
  #   sommaCFwind= (float(eolico[i])) + sommaCFwind
   #  sommaProdWind= (float(eolico[i])*18*8) + sommaProdWind
     consumoTOT = consumoTOT + (float(consumo[i]))
-    sommaCFwec = sommaCFwec + (float(datiCFsopra[i]))
-    sommaProdwec = sommaProdwec + (float(datiCFsopra[i])*pMax*2)
-    sommaProdsol= sommaProdsol + (float(datiCFsolareNORD[i]))
+  #  sommaCFwec = sommaCFwec + (float(datiCFsopra[i]))
+   # sommaProdwec = sommaProdwec + (float(datiCFsopra[i])*pMax*2)
+    sommaProdsol= sommaProdsol + (float(datiCFsolareNORD[i])*2)
     sommaCFsol = sommaCFsol + (float(datiCFsolareNORD[i]))
 
 
@@ -138,14 +138,14 @@ diesel=[]
 for linea in risultato:
       count = 0
       for dato in linea:
-          if(count==6):
+          if(count==4):
                 energia.append(dato)
           count = count + 1
 
 soc = 0
 effCar = 0.975
 effScar = 0.975
-accumulatore = 5 # suppongo 100 MWh
+accumulatore = 10 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 totale = 0
@@ -221,4 +221,4 @@ sommaCFsol= sommaCFsol/8760
 socMedio = socMedio/8760
 sommaCFwec = sommaCFwec/8760
 
-print("CF_sun medio: ",sommaCFsol,"prodTOT_sol: ",sommaProdsol,"CF_wec medio: ",sommaCFwec,"prodTOT_wec: ",sommaProdwec,"consumoTOT: ",consumoTOT,"socMedio: ",socMedio,"ProdDieselTOT: ",totale)
+print("CF_sun medio: ",sommaCFsol,"prodTOT_sol: ",sommaProdsol,"consumoTOT: ",consumoTOT,"socMedio: ",socMedio,"ProdDieselTOT: ",totale)
