@@ -24,6 +24,14 @@ with open('./CF_sopra.csv', 'r') as fileTEMP:
     tempo = [(linea[0]) for linea in reader]
 
 
+sommaCFwind=0
+sommaCFwec = 0
+sommaProdwec = 0
+sommaProdWind=0
+consumoTOT = 0
+socMedio = 0
+prod_dieselTOT = 0
+
 datiCFsopra=[]
 with open('./CF_sopra.csv', 'r') as file:
  reader = csv.reader(file,delimiter=',')
@@ -83,28 +91,36 @@ with open('./carico elettrico.csv', 'r') as file8:
 
 pMax = 76891.2000390625/1000000
 risultato=[]
-sol=0
-Cf_sol=0
+sommaProdsol= 0
+sommaCFsol = 0
 #risultato.append(["Tempo, CF wec sopra, CF wec sotto, CF OFS sopra,  CF OFS sotto, CF ONS sopra, CF ONS sotto, CF sun sopra, Y FV installato sopra, CF sun sotto, Y FV installato sotto, consumo"])
-risultato.append(["Tempo, CF wec, produzione WEC, CF eolico, produzione EOLICO, CF FV, produzione FV, consumo elettrico, produzione diesel"])
+risultato.append(["Tempo, CF wec, produzione WEC, CF FV, produzione FV, consumo elettrico, produzione diesel"])
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
     daAppendere.append(float(datiCFsopra[i]))
-    daAppendere.append(float(datiCFsopra[i])*pMax)
-    daAppendere.append(float(datiCFoffshoresopra[i]))
-    Cf_sol = Cf_sol + float(datiCFsolareNORD[i])
-    daAppendere.append(float(datiCFoffshoresopra[i])*5)
+    daAppendere.append(float(datiCFsopra[i])*pMax*2)
+    #daAppendere.append(float(datiCFoffshoresopra[i]))
+   # Cf_sol = Cf_sol + float(datiCFsolareNORD[i])
+   # daAppendere.append(float(datiCFoffshoresopra[i])*5)
     daAppendere.append(float(datiCFsolareNORD[i]))
-    daAppendere.append(float(datiCFsolareNORD[i])*4)
+    daAppendere.append(float(datiCFsolareNORD[i]))
    # sol = sol + float(datiCFsolareNORD[i])*2
     daAppendere.append(float(consumo[i]))
     daAppendere.append(float(consumo[i])-(float(datiCFsolareNORD[i]))-(float(datiCFsopra[i])*pMax)*2)
     risultato.append(daAppendere)
+ #   sommaCFwind= (float(eolico[i])) + sommaCFwind
+  #  sommaProdWind= (float(eolico[i])*18*8) + sommaProdWind
+    consumoTOT = consumoTOT + (float(consumo[i]))
+    sommaCFwec = sommaCFwec + (float(datiCFsopra[i]))
+    sommaProdwec = sommaProdwec + (float(datiCFsopra[i])*pMax*2)
+    sommaProdsol= sommaProdsol + (float(datiCFsolareNORD[i]))
+    sommaCFsol = sommaCFsol + (float(datiCFsolareNORD[i]))
+
 
 #print("PRODUZIONE SOLARE: ",sol)
-mediacfsol = Cf_sol / 8760
-print("MEDIA CF : ",mediacfsol)
+#mediacfsol = Cf_sol / 8760
+#print("MEDIA CF : ",mediacfsol)
 file_path = './ModelloElettricoSanDomino.csv'
 try:
     os.remove(file_path)
@@ -122,14 +138,14 @@ diesel=[]
 for linea in risultato:
       count = 0
       for dato in linea:
-          if(count==8):
+          if(count==6):
                 energia.append(dato)
           count = count + 1
 
 soc = 0
 effCar = 0.975
 effScar = 0.975
-accumulatore = 10 # suppongo 100 MWh
+accumulatore = 5 # suppongo 100 MWh
 maxdelta=0
 prec = 0
 totale = 0
@@ -155,6 +171,7 @@ for dato in energia:
     if(((abs(soc-prec)/100)*accumulatore)>maxdelta):
         maxdelta = ((abs(soc-prec)/100)*accumulatore)
        # print("ecco prec: ",prec,"ecco soc: ",soc,"ecco maxDelta: ",maxdelta)
+    socMedio = socMedio + soc
     prec = soc
     totale = totale + prod_diesel
     diesel.append(prod_diesel)
@@ -199,3 +216,9 @@ costodiesel = totale * 390
 costototale = costoAccumulatore + costoimpianti + costodiesel
 
 print("Costo totale :",costototale)
+
+sommaCFsol= sommaCFsol/8760
+socMedio = socMedio/8760
+sommaCFwec = sommaCFwec/8760
+
+print("CF_sun medio: ",sommaCFsol,"prodTOT_sol: ",sommaProdsol,"CF_wec medio: ",sommaCFwec,"prodTOT_wec: ",sommaProdwec,"consumoTOT: ",consumoTOT,"socMedio: ",socMedio,"ProdDieselTOT: ",totale)
