@@ -201,7 +201,7 @@ print("Costo totale :",costototale)
 
 #accumulatore 5 mw no OPEX!! CALCOLO 2030!!!!!!!!!!!
 
-capexAnnoZero = 971 * 1000 + costoAccumulatore
+capexAnnoZero = 971 * 1000 * 2 + costoAccumulatore
 t = 25 #tempo di vita
 r = 0.025 #discount ratio
 opex = 10 * 1000 * 2 + totale * 390 + (costoAccumulatore/100) #  manutenzione accumulatore 
