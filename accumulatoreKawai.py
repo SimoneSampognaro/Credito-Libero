@@ -63,16 +63,16 @@ risultato.append(["Tempo, CF eolico offshore, produzione EOLICO offshore, consum
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
-   # daAppendere.append(float(wec[i]))
-    #daAppendere.append(float(wec[i])*pMax*2)
+    daAppendere.append(float(wec[i]))
+    daAppendere.append(float(wec[i])*pMax*2)
     daAppendere.append(float(eolico[i]))
-    daAppendere.append(float(eolico[i])*18*8)
+    daAppendere.append(float(eolico[i])*18*5)
     daAppendere.append(float(consumo[i])*359839)
-    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*8))
+    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*5)-(float(wec[i])*pMax*2))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
     sommaCFwind= (float(eolico[i])) + sommaCFwind
-    sommaProdWind= (float(eolico[i])*18*8) + sommaProdWind
+    sommaProdWind= (float(eolico[i])*18*5) + sommaProdWind
     consumoTOT = consumoTOT + (float(consumo[i])*359839)
     sommaCFwec = sommaCFwec + (float(wec[i]))
     sommaProdwec = sommaProdwec + (float(wec[i])*pMax*2)
@@ -87,7 +87,7 @@ diesel=[]
 for linea in risultato:
       count = 0
       for dato in linea:
-          if(count==4):
+          if(count==6):
                 energia.append(dato)
                 print(dato)
           count = count + 1
