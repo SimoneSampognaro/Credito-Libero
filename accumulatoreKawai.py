@@ -66,13 +66,13 @@ for i in range(0,8760):
     daAppendere.append(float(wec[i]))
     daAppendere.append(float(wec[i])*pMax*2)
     daAppendere.append(float(eolico[i]))
-    daAppendere.append(float(eolico[i])*18*5)
+    daAppendere.append(float(eolico[i])*18*8)
     daAppendere.append(float(consumo[i])*359839)
-    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*5)-(float(wec[i])*pMax*2))
+    daAppendere.append((float(consumo[i])*359839)-((float(eolico[i])*18)*8))
     #print("ecco il consumo",consumo[i],"ecco cosa avanza",(float(consumo[i])-(float(wec[i])*pMax)))
     risultato.append(daAppendere)
     sommaCFwind= (float(eolico[i])) + sommaCFwind
-    sommaProdWind= (float(eolico[i])*18*5) + sommaProdWind
+    sommaProdWind= (float(eolico[i])*18*8) + sommaProdWind
     consumoTOT = consumoTOT + (float(consumo[i])*359839)
     sommaCFwec = sommaCFwec + (float(wec[i]))
     sommaProdwec = sommaProdwec + (float(wec[i])*pMax*2)
@@ -149,11 +149,16 @@ file_path = './richiestaDieselKawai.csv'
 try:
     os.remove(file_path)
 except OSError as e:
-    print("Error: %s : %s" % (file_path, e.strerror))    
+    print("Error: %s : %s" % (file_path, e.strerror))
+dieselprint=[]    
+for d in diesel:
+    a = str(d)
+    a = a.replace(".",",")
+    dieselprint.append(a)
 
 with open('richiestaDieselKawai.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
-     writer.writerows(map(lambda x: [x], diesel))
+     writer.writerows(map(lambda x: [x], dieselprint))
 
 """
 totalediesel=[]
