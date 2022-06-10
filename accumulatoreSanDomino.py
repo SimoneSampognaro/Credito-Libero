@@ -98,8 +98,8 @@ risultato.append(["Tempo, CF wec, produzione WEC, consumo elettrico, produzione 
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
-    #daAppendere.append(float(datiCFsopra[i]))
-   # daAppendere.append(float(datiCFsopra[i])*pMax*2)
+   # daAppendere.append(float(datiCFsopra[i]))
+ #   daAppendere.append(float(datiCFsopra[i])*pMax*2)
     #daAppendere.append(float(datiCFoffshoresopra[i]))
    # Cf_sol = Cf_sol + float(datiCFsolareNORD[i])
    # daAppendere.append(float(datiCFoffshoresopra[i])*5)
@@ -112,8 +112,8 @@ for i in range(0,8760):
  #   sommaCFwind= (float(eolico[i])) + sommaCFwind
   #  sommaProdWind= (float(eolico[i])*18*8) + sommaProdWind
     consumoTOT = consumoTOT + (float(consumo[i]))
-  #  sommaCFwec = sommaCFwec + (float(datiCFsopra[i]))
-   # sommaProdwec = sommaProdwec + (float(datiCFsopra[i])*pMax*2)
+    sommaCFwec = sommaCFwec + (float(datiCFsopra[i]))
+    sommaProdwec = sommaProdwec + (float(datiCFsopra[i])*pMax*2)
     sommaProdsol= sommaProdsol + (float(datiCFsolareNORD[i])*2)
     sommaCFsol = sommaCFsol + (float(datiCFsolareNORD[i]))
 
@@ -127,7 +127,7 @@ try:
 except OSError as e:
     print("Error: %s : %s" % (file_path, e.strerror))    
 
-with open('ModelloElettricoSanDomino.csv', 'w', newline='') as fileOUT:
+with open('2MW_PV.csv', 'w', newline='') as fileOUT:
      writer = csv.writer(fileOUT)
      for linea in risultato:
          writer.writerow(linea)
@@ -221,5 +221,8 @@ print("Costo totale :",costototale)
 sommaCFsol= sommaCFsol/8760
 socMedio = socMedio/8760
 sommaCFwec = sommaCFwec/8760
+
+print(sommaCFwec)
+print(sommaProdwec)
 
 print("CF_sun medio: ",sommaCFsol,"prodTOT_sol: ",sommaProdsol,"consumoTOT: ",consumoTOT,"socMedio: ",socMedio,"ProdDieselTOT: ",totale)
