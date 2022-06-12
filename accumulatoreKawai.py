@@ -63,8 +63,8 @@ risultato.append(["Tempo, CF eolico offshore, produzione EOLICO offshore, consum
 for i in range(0,8760):
     daAppendere=[]
     daAppendere.append(tempo[i])
-    daAppendere.append(float(wec[i]))
-    daAppendere.append(float(wec[i])*pMax*2)
+   # daAppendere.append(float(wec[i]))
+   # daAppendere.append(float(wec[i])*pMax*2)
     daAppendere.append(float(eolico[i]))
     daAppendere.append(float(eolico[i])*18*8)
     daAppendere.append(float(consumo[i])*359839)
@@ -87,7 +87,7 @@ diesel=[]
 for linea in risultato:
       count = 0
       for dato in linea:
-          if(count==6):
+          if(count==4):
                 energia.append(dato)
                 print(dato)
           count = count + 1

@@ -48,7 +48,7 @@ CF_medio = sommaCF / 8760
 print("Energia prodotta WEC: ",round(energiaProdottaWec,0),"MWh, il CF medio è: ",CF_medio)
 
 r = 0.025 #discount ratio
-capex_wec = 7611 * 1000 * pMax
+capex_wec = 6164 * 1000  * pMax 
 
 opex_wec = (capex_wec*3)/100 # opex è il 3% del capex
 
